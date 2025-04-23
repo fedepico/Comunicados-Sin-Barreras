@@ -167,5 +167,3 @@ Contiene lógica y configuración compartida entre microservicios:
    docker build -t java-service ./java
    docker build -t python-service ./python
    docker build -t api-gateway ./gateway
-
-## Pull Request
