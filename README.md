@@ -167,3 +167,103 @@ Contiene lógica y configuración compartida entre microservicios:
    docker build -t java-service ./java
    docker build -t python-service ./python
    docker build -t api-gateway ./gateway
+
+---
+
+# 🛍️ Guía de Colaboración para Desarrolladores
+
+## 🛡 Estructura de Ramas
+
+- **`main`**: Rama principal. Contiene solo código **estable y listo para producción**.
+- **`develop`**: Rama de desarrollo. Aquí se integran nuevas funcionalidades antes de pasar a producción.
+
+---
+
+## 🔐 Reglas Generales
+
+- ❌ No se permite hacer `push` directo a `main`.
+- ✅ Todo el desarrollo se hace desde una rama creada a partir de `develop`.
+- 📩 Los Pull Requests se hacen **siempre hacia `develop`**.
+- 🔍 Solo el responsable del proyecto fusiona `develop` con `main` una vez revisado todo.
+
+---
+
+## 🔁 Flujo de Trabajo
+
+### 1. 📥 Obtener la última versión de `develop`
+
+```bash
+git checkout develop
+git pull origin develop
+```
+
+---
+
+### 2. 🌿 Crear una nueva rama para tu funcionalidad
+
+```bash
+git checkout -b nombre-de-la-rama
+```
+
+> 📝 Usa nombres descriptivos para la rama según la funcionalidad que vas a trabajar.
+
+#### Ejemplos de nombres de ramas:
+
+| Funcionalidad       | Nombre de la rama        |
+|---------------------|--------------------------|
+| Clase Usuario        | `usuario`                |
+| Vista de login       | `login-ui`               |
+| Validación de tokens | `token-validation`       |
+| Mejoras al README    | `mejoras-readme`         |
+
+---
+
+### 3. 👨‍💼 Trabaja en tu funcionalidad
+
+```bash
+git add .
+git commit -m "Agrega clase Usuario con validaciones básicas"
+```
+
+---
+
+### 4. 🚀 Sube tu rama al repositorio
+
+```bash
+git push -u origin nombre-de-la-rama
+```
+
+---
+
+### 5. 📩 Crear un Pull Request hacia `develop`
+
+1. Ve a GitHub
+2. Crea un Pull Request de tu rama → `develop`
+3. Espera revisión y aprobación
+4. Resuelve conflictos si los hay (en tu rama)
+
+---
+
+### 6. ✅ Fusión final a `main`
+
+El responsable del proyecto revisará y aprobará la integración de `develop` a `main` cuando todo esté verificado.
+
+---
+
+## 📌 Buenas Prácticas
+
+- Haz commits pequeños y descriptivos.
+- Actualiza tu rama frecuentemente con los últimos cambios de `develop`:
+  ```bash
+  git checkout develop
+  git pull origin develop
+  git checkout mi-rama
+  git merge develop
+  ```
+- Borra tu rama local y remota una vez fusionada.
+
+---
+
+👥 Esta guía ayuda a mantener el proyecto ordenado y colaborativo.
+
+
