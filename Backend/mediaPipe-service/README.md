@@ -1,12 +1,10 @@
 # Microservicio Backend – Comunicados Sin Barreras
 
-Este microservicio forma parte del aplicativo "Comunicados Sin Barreras", diseñado para ayudar a personas sordomudas a traducir lenguaje de señas a texto mediante visión computacional con MediaPipe.
+Este microservicio forma parte del aplicativo "Comunicados Sin Barreras", diseñado para ayudar a personas limitadas o con baja visión.
 
 ## 🚀 Funcionalidad
-- Recibe una imagen (JPEG) desde un cliente o frontend.
-- Detecta si el gesto representa la letra "A" en lenguaje de señas.
-- Retorna una respuesta JSON con el gesto detectado y el nivel de confianza.
-
+- Detecta el contenido de la pantalla y lo convierte a voz si es invidente.
+- Retorna una respuesta JSON con el gesto detectado y el nivel de confianza para un sordomudo.
 ---
 
 ## 📦 Requisitos
