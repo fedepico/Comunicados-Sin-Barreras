@@ -31,3 +31,51 @@ build/
 
 ### VS Code ###
 .vscode/
+# Bytecode de Python
+__pycache__/
+*.py[cod]
+*.pyo
+
+# Archivos temporales de sistema
+*.log
+*.tmp
+*.swp
+.DS_Store
+Thumbs.db
+
+# Entornos virtuales
+venv/
+.env/
+.venv/
+env/
+
+# Archivos multimedia generados
+*.mp3
+*.wav
+*.avi
+*.mp4
+*.mpg
+*.jpeg
+*.jpg
+*.png
+
+# Archivos del modelo entrenado
+*.h5
+*.pkl
+*.joblib
+
+# Archivos de configuración locales
+*.sqlite3
+*.db
+*.ini
+
+# Visual Studio Code
+.vscode/
+
+# Carpetas específicas de tu proyecto
+lsa64_preprocessed/
+dataset_frames/
+lectura.mp3
+prueba-Image.jpeg
+Pruebalocal.py
+temp_*.jpeg
