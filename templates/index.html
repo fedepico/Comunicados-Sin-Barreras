@@ -20,13 +20,23 @@
           <button type="submit" class="btn btn-primary">Leer Imagen</button>
         </form>
 
-        {% if texto and origen == 'imagen' %}
+        {% if texto %}
         <div class="mt-4">
-          <h5>Texto Detectado:</h5>
+          <h5>{{ "Texto Detectado:" if origen == 'imagen' else "Letra Detectada:" }}</h5>
           <p id="outputTexto" class="form-control bg-light">{{ texto }}</p>
-          <button onclick="leerConVoz()" class="btn btn-warning mt-2">🔊 Escuchar texto</button>
         </div>
-        {% endif %}        
+
+        <script>
+          window.onload = () => {
+            const texto = document.getElementById("outputTexto")?.innerText;
+            if (texto) {
+              const voz = new SpeechSynthesisUtterance(texto);
+              voz.lang = "es-ES";
+              speechSynthesis.speak(voz);
+            }
+          };
+        </script>
+        {% endif %}
       </div>
     </div>
 
