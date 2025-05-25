@@ -3,20 +3,40 @@ from fastapi.responses import HTMLResponse, FileResponse, JSONResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from PIL import Image
-import pytesseract
 from gtts import gTTS
 import shutil
 import os
 import cv2
+import requests
 from modelo_inferencia import predict_sign
 
 app = FastAPI()
 app.mount("/static", StaticFiles(directory="static"), name="static")
 templates = Jinja2Templates(directory="templates")
 
+
+# ✅ Función OCR vía API externa (reemplaza pytesseract)
+def leer_texto_desde_imagen(img_path):
+    url = 'https://api.ocr.space/parse/image'
+    with open(img_path, 'rb') as f:
+        files = {'file': (img_path, f)}
+        payload = {
+            'apikey': 'K86595358688957',  # ← Reemplaza esto con tu API key real
+            'language': 'spa',
+        }
+        response = requests.post(url, data=payload, files=files)
+        resultado = response.json()
+        if resultado.get("ParsedResults"):
+            texto = resultado["ParsedResults"][0]["ParsedText"]
+            return texto.strip()
+        else:
+            return "[No se detectó texto]"
+
+
 @app.get("/", response_class=HTMLResponse)
 async def index(request: Request):
     return templates.TemplateResponse("index.html", {"request": request})
+
 
 @app.post("/leer_texto", response_class=HTMLResponse)
 async def leer_texto(request: Request, imagen: UploadFile = File(...)):
@@ -24,11 +44,13 @@ async def leer_texto(request: Request, imagen: UploadFile = File(...)):
     with open(ruta, "wb") as f:
         shutil.copyfileobj(imagen.file, f)
 
-    texto = pytesseract.image_to_string(Image.open(ruta), lang="spa")
+    texto = leer_texto_desde_imagen(ruta)
+
     if texto.strip():
         gTTS(text=texto, lang="es").save("voz.mp3")
 
     return templates.TemplateResponse("index.html", {"request": request, "texto": texto, "origen": "imagen"})
+
 
 @app.post("/senas", response_class=HTMLResponse)
 async def detectar_sena(request: Request, video: UploadFile = File(...)):
@@ -56,17 +78,20 @@ async def detectar_sena(request: Request, video: UploadFile = File(...)):
 
     return templates.TemplateResponse("index.html", {"request": request, "texto": letra, "origen": "video"})
 
+
 @app.get("/voz.mp3")
 async def voz():
     if os.path.exists("voz.mp3"):
         return FileResponse("voz.mp3", media_type="audio/mpeg")
     return {"error": "No se encontró el archivo de voz"}
 
+
 # 📍 Ubicación simulada por coordenadas
 lugares_registrados = [
     {"nombre": "Biblioteca Pública", "lat": 4.6097, "lon": -74.0818, "accion": "leer_texto"},
     {"nombre": "Hospital Central", "lat": 4.6100, "lon": -74.0825, "accion": "senas"}
 ]
+
 
 @app.get("/ubicacion")
 async def detectar_ubicacion(lat: float, lon: float):
@@ -75,10 +100,12 @@ async def detectar_ubicacion(lat: float, lon: float):
             return {"lugar": lugar["nombre"], "accion": lugar["accion"]}
     return {"lugar": "No registrado", "accion": "ninguna"}
 
+
 # ✋ Simulación de sensor de proximidad
 @app.get("/sensor/proximidad")
 async def sensor_proximidad():
     return {"activado": True}
+
 
 # 📶 Lectura NFC simulada
 @app.get("/nfc")
