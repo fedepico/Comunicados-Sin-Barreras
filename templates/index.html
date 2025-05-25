@@ -23,13 +23,10 @@
         {% if texto and origen == 'imagen' %}
         <div class="mt-4">
           <h5>Texto Detectado:</h5>
-          <p class="form-control bg-light">{{ texto }}</p>
-          <audio controls autoplay class="mt-2">
-            <source src="/voz.mp3" type="audio/mpeg">
-            Tu navegador no soporta la reproducción de audio.
-          </audio>
+          <p id="outputTexto" class="form-control bg-light">{{ texto }}</p>
+          <button onclick="leerConVoz()" class="btn btn-warning mt-2">🔊 Escuchar texto</button>
         </div>
-        {% endif %}
+        {% endif %}        
       </div>
     </div>
 
@@ -47,12 +44,9 @@
         <div class="mt-4">
           <h5>Letra Detectada:</h5>
           <p id="outputTexto" class="form-control bg-light">{{ texto }}</p>
-          <audio controls autoplay class="mt-2">
-            <source src="/voz.mp3" type="audio/mpeg">
-            Tu navegador no soporta la reproducción de audio.
-          </audio>
+          <button onclick="leerConVoz()" class="btn btn-warning mt-2">🔊 Escuchar letra</button>
         </div>
-        {% endif %}
+        {% endif %}                
       </div>
     </div>
 
@@ -84,6 +78,13 @@
       } else {
         alert("Geolocalización no soportada por tu navegador.");
       }
+    }
+
+    function leerConVoz() {
+      const texto = document.getElementById("outputTexto").innerText;
+      const voz = new SpeechSynthesisUtterance(texto);
+      voz.lang = "es-ES";
+      window.speechSynthesis.speak(voz);
     }
 
     function activarPorProximidad() {
