@@ -3,7 +3,6 @@ from fastapi.responses import HTMLResponse, FileResponse, JSONResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from PIL import Image
-from gtts import gTTS
 import shutil
 import os
 import cv2
@@ -46,9 +45,6 @@ async def leer_texto(request: Request, imagen: UploadFile = File(...)):
 
     texto = leer_texto_desde_imagen(ruta)
 
-    if texto.strip():
-        gTTS(text=texto, lang="es").save("voz.mp3")
-
     return templates.TemplateResponse("index.html", {"request": request, "texto": texto, "origen": "imagen"})
 
 
@@ -72,18 +68,10 @@ async def detectar_sena(request: Request, video: UploadFile = File(...)):
 
     if len(frames) == 20:
         letra = predict_sign(frames)
-        gTTS(text=letra, lang="es").save("voz.mp3")
     else:
         letra = "⛔ Video muy corto"
 
     return templates.TemplateResponse("index.html", {"request": request, "texto": letra, "origen": "video"})
-
-
-@app.get("/voz.mp3")
-async def voz():
-    if os.path.exists("voz.mp3"):
-        return FileResponse("voz.mp3", media_type="audio/mpeg")
-    return {"error": "No se encontró el archivo de voz"}
 
 
 # 📍 Ubicación simulada por coordenadas
