@@ -72,11 +72,11 @@ print("🚀 Entrenando el modelo...")
 model.fit(X_train, y_train, validation_data=(X_val, y_val), epochs=5, batch_size=4)
 
 # Guardar modelo
-model.save("sign_language_model_reducido.h5")
+model.save("app/modelos/sign_language_model_reducido.h5")
 print("📁 Modelo guardado como sign_language_model_reducido.h5 ✅")
 
 # Función predict_sign incluida
-modelo = load_model("sign_language_model_reducido.h5")
+modelo = load_model("app/modelos/sign_language_model_reducido.h5")
 
 def predict_sign(frames):
     if len(frames) != FRAMES_POR_VIDEO:

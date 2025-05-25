@@ -7,7 +7,7 @@ FRAME_SIZE = (64, 64)
 CLASES = list("ABCDEFGHIJ")
 
 # Cargar modelo SOLO una vez
-modelo = load_model("sign_language_model_reducido.h5")
+modelo = load_model("app/modelos/sign_language_model_reducido.h5")
 
 def predict_sign(frames):
     if len(frames) != FRAMES_POR_VIDEO:
