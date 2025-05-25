@@ -1,0 +1,9 @@
+fastapi
+uvicorn
+python-multipart
+pytesseract
+gTTS
+jinja2
+opencv-python
+numpy
+mediapipe

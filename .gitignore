@@ -1,0 +1,20 @@
+# Carpetas a ignorar
+__pycache__/
+dataset_frames/
+videos-Alfabeto/
+.vscode/
+.idea/
+
+# Archivos grandes o generados
+*.mp4
+*.jpg
+*.jpeg
+*.png
+*.mp3
+*.h5
+temp.*
+voz.*
+
+# Otros archivos
+.env
+.DS_Store
