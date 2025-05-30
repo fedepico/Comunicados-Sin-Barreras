@@ -9,7 +9,6 @@ from tensorflow.keras.layers import TimeDistributed, Conv2D, MaxPooling2D, Flatt
 # Configuración reducida para prueba
 FRAMES_DIR = "dataset_frames"
 FRAMES_POR_VIDEO = 20
-#MAX_VIDEOS_POR_LETRA = 3   # Cambia a 20 cuando tengas más datos
 FRAME_SIZE = (64, 64)
 CLASES = list("ABCDEFGHIJ")
 
@@ -23,7 +22,6 @@ for idx, letra in enumerate(CLASES):
     if not os.path.exists(letra_dir):
         print(f"⚠️ Carpeta no encontrada: {letra_dir}")
         continue
-    #videos = os.listdir(letra_dir)[:MAX_VIDEOS_POR_LETRA]
     videos = os.listdir(letra_dir)  # usa todos los disponibles
     for video in videos:
         video_path = os.path.join(letra_dir, video)
@@ -75,16 +73,13 @@ model.fit(X_train, y_train, validation_data=(X_val, y_val), epochs=5, batch_size
 model.save("app/modelos/sign_language_model_reducido.h5")
 print("📁 Modelo guardado como sign_language_model_reducido.h5 ✅")
 
-# Función predict_sign incluida
-modelo = load_model("app/modelos/sign_language_model_reducido.h5")
-
 def predict_sign(frames):
     if len(frames) != FRAMES_POR_VIDEO:
         raise ValueError("Se requieren exactamente 20 frames para la predicción")
     frames_resized = [cv2.resize(f, FRAME_SIZE) for f in frames]
     frames_np = np.array(frames_resized, dtype=np.float32) / 255.0
     input_modelo = np.expand_dims(frames_np, axis=0)
-    pred = modelo.predict(input_modelo)
+    pred = model.predict(input_modelo)
     idx = np.argmax(pred)
     letra = CLASES[idx]
     return letra
